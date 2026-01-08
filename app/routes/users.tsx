@@ -1,4 +1,9 @@
-import { Form, useLoaderData, type ActionFunctionArgs } from "react-router";
+import {
+  Form,
+  Link,
+  useLoaderData,
+  type ActionFunctionArgs,
+} from "react-router";
 import { addUser, getUsers } from "~/users.servers";
 
 export async function loader() {
@@ -14,7 +19,13 @@ export default function Users() {
         <ul>
           {usersArray.map((user) => (
             <li key={user.id} className="text-lg font-mono">
-              <a href="/">{user.name}</a>
+              <Link
+                className="text-blue-500 hover:text-blue-700"
+                to={`/users/${user.slug}`}
+              >
+                {" "}
+                {user.name}
+              </Link>
             </li>
           ))}
         </ul>

@@ -2,10 +2,10 @@ import { resolve } from "path";
 
 const db = {
   users: [
-    { id: 1, name: "Virgile", email: "test@gmail.com" },
-    { id: 2, name: "Robert" },
-    { id: 3, name: "Alain" },
-    { id: 4, name: "Bob" },
+    { id: 1, name: "Virgile", slug: "vir" },
+    { id: 2, name: "Robert", slug: "rob" },
+    { id: 3, name: "Alain", slug: "ala" },
+    { id: 4, name: "Bob", slug: "bob" },
   ],
   userSettings: [
     { id: 1, userId: 1, settings: { theme: "light" } },
@@ -22,7 +22,7 @@ export async function getUsers() {
 }
 
 export async function addUser({ name }: { name: string }) {
-  const newUser = { id: db.users.length + 1, name };
+  const newUser = { id: db.users.length + 1, name, slug: name };
   db.users.push(newUser);
   return newUser;
 }
