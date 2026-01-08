@@ -1,0 +1,28 @@
+import { resolve } from "path";
+
+const db = {
+  users: [
+    { id: 1, name: "Virgile", email: "test@gmail.com" },
+    { id: 2, name: "Robert" },
+    { id: 3, name: "Alain" },
+    { id: 4, name: "Bob" },
+  ],
+  userSettings: [
+    { id: 1, userId: 1, settings: { theme: "light" } },
+    { id: 2, userId: 2, settings: { theme: "dark" } },
+    { id: 3, userId: 3, settings: { theme: "light" } },
+    { id: 4, userId: 4, settings: { theme: "dark" } },
+  ],
+};
+
+export async function getUsers() {
+  //On simule un délai
+  await new Promise((resolve) => setTimeout(resolve, 100));
+  return db.users;
+}
+
+export async function addUser({ name }: { name: string }) {
+  const newUser = { id: db.users.length + 1, name };
+  db.users.push(newUser);
+  return newUser;
+}
