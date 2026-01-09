@@ -1,5 +1,6 @@
 import {
   Form,
+  href,
   Link,
   useLoaderData,
   type ActionFunctionArgs,
@@ -14,22 +15,29 @@ export default function Users() {
   const { usersArray } = useLoaderData<typeof loader>();
   return (
     <>
-      <div className="px-8 py-2">
+      <div className="px-8 py-2 flex flex-row gap-4">
         <h1 className="text-2xl font-bold">Utilisateurs</h1>
-        <ul>
+
+        <ul className="flex flex-col gap-4 max-w-[400px]">
           {usersArray.map((user) => (
-            <li key={user.id} className="text-lg font-mono">
+            <li
+              key={user.id}
+              className="text-lg font-mono p-4 bg-white
+            shadow-md rounded-lg hover:shadow-lg transition-shadow"
+            >
               <Link
-                className="text-blue-500 hover:text-blue-700"
-                to={`/users/${user.slug}`}
+                className="text-blue-500 hover:text-blue-700 text-xl"
+                to={href("/users/:userSlug", {
+                  userSlug: user.slug,
+                })}
               >
-                {" "}
                 {user.name}
               </Link>
             </li>
           ))}
         </ul>
-        <Form method="POST">
+
+        <Form method="POST" className="mt-6 flex gap-2">
           <input
             type="text"
             name="name"
@@ -40,6 +48,9 @@ export default function Users() {
             Ajouter un utilisateur
           </button>
         </Form>
+      </div>
+      <div className="bg-slate-100 size-[400px] rounded-lg">
+        <h2>Veuillez sélectionner un profil</h2>
       </div>
     </>
   );
