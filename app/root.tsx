@@ -1,5 +1,7 @@
 import {
+  href,
   isRouteErrorResponse,
+  Link,
   Links,
   Meta,
   Outlet,
@@ -33,6 +35,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="bg-gray-200! min-h-screen text-black">
+        <header className="bg-white shadow-md">
+          <nav className="container mx-auto flex gap-8 items-center px-4 py-2">
+            <Link to={href("/")} className="text-gray-800 font-bold">
+              Home
+            </Link>
+            <Link to={href("/users")} className="text-gray-800 font-bold">
+              Users
+            </Link>
+          </nav>
+        </header>
+
         {children}
         <ScrollRestoration />
         <Scripts />

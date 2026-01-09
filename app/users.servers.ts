@@ -17,12 +17,16 @@ const db = {
 
 export async function getUsers() {
   //On simule un délai
-  await new Promise((resolve) => setTimeout(resolve, 100));
+  //await new Promise((resolve) => setTimeout(resolve, 100));
   return db.users;
 }
 
 export async function addUser({ name }: { name: string }) {
-  const newUser = { id: db.users.length + 1, name, slug: name };
+  const newUser = { id: db.users.length + 1, name, slug: name.toLowerCase() };
   db.users.push(newUser);
   return newUser;
+}
+
+export async function getUserBySlug({ slug }: { slug: string }) {
+  return db.users.find((user) => user.slug === slug);
 }
