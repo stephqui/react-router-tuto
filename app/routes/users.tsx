@@ -2,6 +2,7 @@ import {
   Form,
   href,
   Link,
+  Outlet,
   useLoaderData,
   type ActionFunctionArgs,
 } from "react-router";
@@ -53,6 +54,7 @@ export default function Users() {
           <h2 className="flex items-center justify-center size-full">
             Veuillez sélectionner un profil
           </h2>
+          <Outlet />
         </div>
       </div>
     </>
