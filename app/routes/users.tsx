@@ -6,8 +6,9 @@ import {
   type ActionFunctionArgs,
 } from "react-router";
 import { addUser, getUsers } from "~/users.servers";
+import type { Route } from "./+types/users";
 
-export async function loader() {
+export async function loader({}: Route.LoaderArgs) {
   return { usersArray: await getUsers() };
 }
 
@@ -16,9 +17,8 @@ export default function Users() {
   return (
     <>
       <div className="px-8 py-2 flex flex-row gap-4">
-        <h1 className="text-2xl font-bold">Utilisateurs</h1>
-
         <ul className="flex flex-col gap-4 max-w-[400px]">
+          <h1 className="text-2xl font-bold">Utilisateurs</h1>
           {usersArray.map((user) => (
             <li
               key={user.id}
@@ -35,22 +35,25 @@ export default function Users() {
               </Link>
             </li>
           ))}
+
+          <Form method="POST" className="mt-6 flex gap-2">
+            <input
+              type="text"
+              name="name"
+              className="px-3 py-2 border border-gray-300 focus:outline-none"
+              placeholder="Nom d'utilisateur"
+            />
+            <button type="submit" className="px-4 py-2 bg-blue-600 text-white">
+              Ajouter un utilisateur
+            </button>
+          </Form>
         </ul>
 
-        <Form method="POST" className="mt-6 flex gap-2">
-          <input
-            type="text"
-            name="name"
-            className="px-3 py-2 border border-gray-300 focus:outline-none"
-            placeholder="Nom d'utilisateur"
-          />
-          <button type="submit" className="px-4 py-2 bg-blue-600 text-white">
-            Ajouter un utilisateur
-          </button>
-        </Form>
-      </div>
-      <div className="bg-slate-100 size-[400px] rounded-lg">
-        <h2>Veuillez sélectionner un profil</h2>
+        <div className="basis-[400px] flex-1 bg-slate-100 size-[400px] rounded-lg">
+          <h2 className="flex items-center justify-center size-full">
+            Veuillez sélectionner un profil
+          </h2>
+        </div>
       </div>
     </>
   );
