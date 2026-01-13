@@ -7,7 +7,7 @@ import {
   type ActionFunctionArgs,
 } from "react-router";
 import { addUser, getUsers } from "~/users.servers";
-import type { Route } from "./+types/users";
+import type { Route } from "./+types/_usersLayout";
 
 export async function loader({}: Route.LoaderArgs) {
   return { usersArray: await getUsers() };
@@ -51,9 +51,6 @@ export default function Users() {
         </ul>
 
         <div className="basis-[400px] flex-1 bg-slate-100 size-[400px] rounded-lg">
-          <h2 className="flex items-center justify-center size-full">
-            Veuillez sélectionner un profil
-          </h2>
           <Outlet />
         </div>
       </div>
