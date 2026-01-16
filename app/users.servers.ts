@@ -28,5 +28,9 @@ export async function addUser({ name }: { name: string }) {
 }
 
 export async function getUserBySlug({ slug }: { slug: string }) {
-  return db.users.find((user) => user.slug === slug);
+  const existingUser = db.users.find((user) => user.slug === slug);
+  //if (!existingUser) {
+  //  throw new Error("User not found");
+  //}
+  return existingUser;
 }
