@@ -2,9 +2,9 @@ import { resolve } from "path";
 
 const db = {
   users: [
-    { id: 1, name: "Virgile", slug: "vir" },
-    { id: 2, name: "Robert", slug: "rob" },
-    { id: 3, name: "Alain", slug: "ala" },
+    { id: 1, name: "Virgile", slug: "virgile" },
+    { id: 2, name: "Robert", slug: "robert" },
+    { id: 3, name: "Alain", slug: "alaain" },
     { id: 4, name: "Bob", slug: "bob" },
   ],
   userSettings: [
@@ -22,6 +22,13 @@ export async function getUsers() {
 }
 
 export async function addUser({ name }: { name: string }) {
+  const slug = name.toLowerCase().replace(/ /g, "-");
+  const existingUser = await getUserBySlug({ slug });
+  /*if (existingUser) {
+    throw new Response(`User ${slug} already exist.`, {
+      status: 400,
+    });
+  }*/
   const newUser = { id: db.users.length + 1, name, slug: name.toLowerCase() };
   db.users.push(newUser);
   return newUser;

@@ -16,6 +16,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export default function User() {
   const { user } = useLoaderData<typeof loader>();
+  //throw new Error("test error");
   return (
     <div className="px-8 py-2">
       <Form
