@@ -19,8 +19,18 @@ export default function Users() {
   return (
     <>
       <div className="px-8 py-2 flex flex-row gap-4">
-        <ul className="flex flex-col gap-4 max-w-[400px]">
-          <h1 className="text-2xl font-bold">Utilisateurs</h1>
+        <ul className="flex flex-col gap-4 basis-[400px] flex-1">
+          <div className="flex flex-row gap-2 w-full justify-between">
+            <h1 className="text-2xl font-bold">Utilisateurs</h1>
+            <Link
+              to={href("/users/:userSlug", {
+                userSlug: "new",
+              })}
+              className="px-4 py-2 bg-emerald-600 text-white"
+            >
+              Ajouter un utilisateur
+            </Link>
+          </div>
           {usersArray.map((user) => (
             <li
               key={user.id}
@@ -38,7 +48,7 @@ export default function Users() {
             </li>
           ))}
 
-          <Form method="POST" className="mt-6 flex gap-2">
+          {/* <Form method="POST" className="mt-6 flex gap-2">
             <input
               type="text"
               name="name"
@@ -48,7 +58,7 @@ export default function Users() {
             <button type="submit" className="px-4 py-2 bg-blue-600 text-white">
               Ajouter un utilisateur
             </button>
-          </Form>
+          </Form>*/}
         </ul>
 
         <div className="basis-[400px] flex-1 bg-slate-100 size-[400px] rounded-lg">

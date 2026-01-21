@@ -4,7 +4,7 @@ const db = {
   users: [
     { id: 1, name: "Virgile", slug: "virgile" },
     { id: 2, name: "Robert", slug: "robert" },
-    { id: 3, name: "Alain", slug: "alaain" },
+    { id: 3, name: "Alain", slug: "alain" },
     { id: 4, name: "Bob", slug: "bob" },
   ],
   userSettings: [

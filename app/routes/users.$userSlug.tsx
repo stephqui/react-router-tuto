@@ -1,9 +1,17 @@
-import { isRouteErrorResponse, useRouteError } from "react-router";
+import {
+  isRouteErrorResponse,
+  useParams,
+  useRouteError,
+  type ActionFunctionArgs,
+} from "react-router";
 import { Form, useLoaderData, type LoaderFunctionArgs } from "react-router";
-import { getUserBySlug } from "~/users.servers";
+import { addUser, getUserBySlug } from "~/users.servers";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const userSlug = params.userSlug as string;
+  if (userSlug === "new") {
+    return { user: null };
+  }
   const user = await getUserBySlug({ slug: userSlug });
   if (!user) {
     throw new Response(`User ${userSlug} was not found`, {
@@ -14,20 +22,29 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return { user };
 }
 
+export async function action({ request }: ActionFunctionArgs) {
+  const formData = await request.formData();
+  const name = formData.get("name");
+  await addUser({ name: name as string });
+  return null;
+}
+
 export default function User() {
   const { user } = useLoaderData<typeof loader>();
-  //throw new Error("test error");
+  const { userSlug } = useParams();
+
   return (
     <div className="px-8 py-2">
       <Form
-        method="post"
+        key={userSlug}
+        method="POST"
         className="flex flex-col gap-3 p-4 
       bg-white rounded-lg shadow-sm"
       >
         <input
           type="text"
           name="name"
-          defaultValue={user.name}
+          defaultValue={user?.name}
           className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
         />
         <button
