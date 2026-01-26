@@ -21,17 +21,53 @@ export async function getUsers() {
   return db.users;
 }
 
+export async function getUserSttings() {
+  //On simule un délai
+  //await new Promise((resolve) => setTimeout(resolve, 100));
+  return db.userSettings;
+}
+
 export async function addUser({ name }: { name: string }) {
   const slug = name.toLowerCase().replace(/ /g, "-");
   const existingUser = await getUserBySlug({ slug });
-  /*if (existingUser) {
+  if (existingUser) {
     throw new Response(`User ${slug} already exist.`, {
       status: 400,
     });
-  }*/
-  const newUser = { id: db.users.length + 1, name, slug: name.toLowerCase() };
+  }
+  const newUser = { id: db.users.length + 1, name, slug };
   db.users.push(newUser);
   return newUser;
+}
+
+export async function updateUser({
+  slug,
+  name,
+}: {
+  slug: string;
+  name: string;
+}) {
+  const existingUser = await getUserBySlug({ slug });
+  const newSlug = name.toLowerCase().replace(/ /g, "-");
+  if (!existingUser) {
+    throw new Response(`User ${slug} not found.`, {
+      status: 400,
+    });
+  }
+
+  const newExistingUser = await getUserBySlug({ slug: newSlug });
+  if (newExistingUser) {
+    throw new Response(`User ${slug} already déjà exist.`, {
+      status: 400,
+    });
+  }
+  existingUser.name = name;
+  existingUser.slug = newSlug;
+
+  db.users = db.users.map((user) =>
+    user.id === existingUser.id ? existingUser : user,
+  );
+  return existingUser;
 }
 
 export async function getUserBySlug({ slug }: { slug: string }) {

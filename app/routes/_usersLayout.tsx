@@ -2,6 +2,7 @@ import {
   Form,
   href,
   Link,
+  NavLink,
   Outlet,
   useLoaderData,
   type ActionFunctionArgs,
@@ -22,14 +23,14 @@ export default function Users() {
         <ul className="flex flex-col gap-4 basis-[400px] flex-1">
           <div className="flex flex-row gap-2 w-full justify-between">
             <h1 className="text-2xl font-bold">Utilisateurs</h1>
-            <Link
+            <NavLink
               to={href("/users/:userSlug", {
                 userSlug: "new",
               })}
               className="px-4 py-2 bg-emerald-600 text-white"
             >
               Ajouter un utilisateur
-            </Link>
+            </NavLink>
           </div>
           {usersArray.map((user) => (
             <li
@@ -37,14 +38,17 @@ export default function Users() {
               className="text-lg font-mono p-4 bg-white
             shadow-md rounded-lg hover:shadow-lg transition-shadow"
             >
-              <Link
-                className="text-blue-500 hover:text-blue-700 text-xl"
+              <NavLink
+                className={({ isActive }) => `text-lg font-mono p-4
+            shadow-md rounded-lg hover:shadow-lg transition-shadow"
+            text-blue-500 hover:text-blue-800
+                block ${isActive ? "bg-blue-400 text-white hover:bg-blue-800 " : "bg-white text-blue-500 hover:text-blue-700"}`}
                 to={href("/users/:userSlug", {
                   userSlug: user.slug,
                 })}
               >
                 {user.name}
-              </Link>
+              </NavLink>
             </li>
           ))}
 

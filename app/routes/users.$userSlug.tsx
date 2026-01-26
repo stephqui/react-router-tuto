@@ -1,17 +1,21 @@
 import {
+  href,
   isRouteErrorResponse,
+  redirect,
   useParams,
   useRouteError,
   type ActionFunctionArgs,
 } from "react-router";
 import { Form, useLoaderData, type LoaderFunctionArgs } from "react-router";
-import { addUser, getUserBySlug } from "~/users.servers";
+import { addUser, getUserBySlug, updateUser } from "~/users.servers";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const userSlug = params.userSlug as string;
-  if (userSlug === "new") {
+  const isNew = userSlug === "new";
+  if (isNew) {
     return { user: null };
   }
+
   const user = await getUserBySlug({ slug: userSlug });
   if (!user) {
     throw new Response(`User ${userSlug} was not found`, {
@@ -22,19 +26,40 @@ export async function loader({ params }: LoaderFunctionArgs) {
   return { user };
 }
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request, params }: ActionFunctionArgs) {
+  const userSlug = params.userSlug;
   const formData = await request.formData();
   const name = formData.get("name");
-  await addUser({ name: name as string });
-  return null;
+  const isNew = userSlug === "new";
+
+  if (isNew) {
+    const createdUser = await addUser({ name: name as string });
+    return redirect(
+      href("/users/:userSlug", {
+        userSlug: createdUser.slug,
+      }),
+    );
+  }
+
+  const updatedUser = await updateUser({
+    slug: userSlug,
+    name: name as string,
+  });
+  return redirect(
+    href("/users/:userSlug", {
+      userSlug: updatedUser.slug,
+    }),
+  );
 }
 
 export default function User() {
   const { user } = useLoaderData<typeof loader>();
   const { userSlug } = useParams();
+  const isNew = userSlug === "new";
 
   return (
     <div className="px-8 py-2">
+      {isNew ? "Ajouter un utilisateur" : "Modifier l'utilisateur"}
       <Form
         key={userSlug}
         method="POST"
@@ -49,9 +74,13 @@ export default function User() {
         />
         <button
           type="submit"
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          className={`px-4 py-2  text-white rounded-md  transition-colors ${
+            isNew
+              ? "bg-emerald-600 hover:bg-emerald-700"
+              : "bg-blue-600 hover:bg-blue-700"
+          }`}
         >
-          Modifier
+          {isNew ? "Ajouter" : "Modifier"}
         </button>
       </Form>
       {/*<h1 className="text-2xl font-bold">{user?.name}</h1>*/}
